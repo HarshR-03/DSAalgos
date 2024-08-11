@@ -1,0 +1,45 @@
+// initially rank and parent are intilialized as par[i] = i and 
+// rank[i] = 1
+
+//normal find
+int Find(int node, int par[]){
+    if(par[node]==node)
+        return node;
+    return find(par[node],par);
+}
+// with path compression
+int FindWithPathCompression(int node, int par[]){
+    if(par[node]!= node){
+        par[node] = FindWithPathCompression(par[node],par);
+    }
+    return par[node];
+}
+//Function to merge two nodes a and b.
+void union_( int a, int b, int par[], int rank1[]) 
+{
+    int xroot= find(a,par);
+    int yroot = find(b,par);
+    //attach smaller rank tree under root of higer rank tree 
+    if(rank1[xroot] < rank1[yroot]){
+        par[xroot] = yroot; 
+    }
+    else if(rank1[xroot] > rank1[yroot]){
+        par[yroot] = xroot;
+    }
+    // If ranks are same, then make one as root and
+    // increment its rank by one
+    else{
+        par[yroot] = xroot;
+        rank1[xroot]++;
+    }
+}
+
+//Function to check whether 2 nodes are connected or not.
+bool isConnected(int x,int y, int par[], int rank1[])
+{
+    int xroot = find(x,par);
+    int yroot = find(y,par);
+    if(xroot == yroot)
+        return true;
+    return false;
+}
