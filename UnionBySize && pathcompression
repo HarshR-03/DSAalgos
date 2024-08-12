@@ -1,0 +1,48 @@
+class Solution
+{
+    public:
+    // initially rank and parent are intilialized as par[i] = i and 
+    // rank[i] = 1
+    //here think of rank array as size (i.e. no of nodes in the component)
+    
+    // with path compression
+    int FindWithPathCompression(int node, int par[]){
+        if(par[node]!= node){
+            par[node] = FindWithPathCompression(par[node],par);
+        }
+        return par[node];
+    }
+    //Function to merge two nodes a and b.
+    //If the size of left is less than the size of right, then it’s best to move left under right and 
+    //increase size of right by size of left. In the same way, if the size of right is less than the size of left, 
+    //then we should move right under left. and increase size of left by size of right.
+    //If the sizes are equal, it doesn’t matter which tree goes under the other.
+    void union_( int a, int b, int par[], int rank1[]) 
+    {
+        int xroot= FindWithPathCompression(a,par);
+        int yroot = FindWithPathCompression(b,par);
+        //attach smaller rank tree under root of higer rank tree
+        if(xroot==yroot)
+            return;
+        int sizexroot = rank1[xroot];
+        int sizeyroot = rank1[yroot];
+        if(sizexroot<sizeyroot){
+            par[xroot] = yroot;
+            rank1[yroot] += rank1[xroot];
+        }
+        else{
+            par[yroot] = xroot;
+            rank1[xroot] += rank1[yroot];
+        }
+    }
+    
+    //Function to check whether 2 nodes are connected or not.
+    bool isConnected(int x,int y, int par[], int rank1[])
+    {
+        int xroot = FindWithPathCompression(x,par);
+        int yroot = FindWithPathCompression(y,par);
+        if(xroot == yroot)
+            return true;
+        return false;
+    }
+};
