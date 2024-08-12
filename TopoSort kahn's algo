@@ -1,0 +1,26 @@
+import collections
+
+class Solution:
+    
+    def topoSort(self, V, adj):
+        q = collections.deque()
+        indeg = [0]*V
+        for i in range(len(adj)):
+            for j in adj[i]:
+                indeg[j]+=1
+        
+        for i in range(len(indeg)):
+            if(indeg[i]==0):
+                q.append(i)
+        
+        ans = []    
+        while q:
+            node = q.popleft()
+            ans.append(node)
+            for i in adj[node]:
+                indeg[i]-=1
+                if(indeg[i]==0):
+                    q.append(i)
+        
+        return ans
+            
