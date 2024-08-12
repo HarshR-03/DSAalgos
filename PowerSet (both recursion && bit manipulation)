@@ -1,0 +1,40 @@
+//RECURSION:
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        ans = []
+        ds = []
+        n = len(nums)
+        def f(i):
+            if(i==n):
+                # ans.append(ds)
+                ans.append(ds.copy())
+                return
+            else:
+                #take 
+                ds.append(nums[i])
+                f(i+1)
+                # nottake
+                ds.pop()
+                f(i+1)
+        f(0)
+        return ans
+
+//BIT MANIPULATION:
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        int n = nums.size();
+        int subsets = 1<<n;
+        vector<vector<int>> ans;
+        for(int num=0; num<subsets; num++){
+            vector<int> temp;
+            for(int i=0; i<n; i++){
+                if(num & 1<<i){
+                    temp.push_back(nums[i]);
+                }
+            }
+            ans.push_back(temp);
+        }
+        return ans;
+    }
+};
