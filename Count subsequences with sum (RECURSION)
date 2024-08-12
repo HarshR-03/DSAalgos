@@ -1,0 +1,18 @@
+#only have to modify base case in take,not-take
+def recur(self,i,arr,n,suma,s):
+        if(s>suma):
+            return 0
+        if(i==n):
+            if(s==suma):
+                return 1
+            else:
+                return 0
+        #take
+        l=0
+        if(s+arr[i]<=suma):
+            l = self.recur(i+1,arr,n,suma,s+arr[i])
+        r = self.recur(i+1,arr,n,suma,s)
+        return (l+r)%(int(1e9+7))
+
+	def perfectSum(self, arr, n, sum):
+		return self.recur(0,arr,n,sum,0)
