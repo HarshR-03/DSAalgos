@@ -1,0 +1,22 @@
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        n = len(nums2)
+        nge = [-1]*n
+        st = []
+        for i in range(n-1,-1,-1):
+            while(not len(st)<=0 and st[-1]<nums2[i]):
+                st.pop()
+            if(len(st)>0):
+                nge[i] = st[-1]
+            elif(len(st)<=0):
+                nge[i] = -1
+            st.append(nums2[i])
+        
+        mpp = defaultdict(None)
+        for i in range(n):
+            mpp[nums2[i]] = i+1
+        
+        ans = []
+        for i in range(len(nums1)):
+            ans.append(nge[mpp[nums1[i]]-1])
+        return ans
