@@ -1,0 +1,23 @@
+class Solution:
+
+    #Function to find the shortest distance of all the vertices
+    #from the source vertex S.
+    def minDist(self,V,mindist,spset):
+        mini = sys.maxsize
+        min_index=0
+        for i in range(V):
+            if(spset[i]!=True and mindist[i]<=mini):
+                mini,min_index=mindist[i],i
+        return min_index
+        
+    def dijkstra(self, V, adj, S):
+        mindist = [sys.maxsize]*V
+        spset = [False]*V
+        mindist[S]=0
+        for i in range(V-1):
+            u = self.minDist(V,mindist,spset)
+            spset[u]=True
+            for [i,w] in adj[u]:
+                if((spset[i]!=True and mindist[u]!=sys.maxsize) and mindist[u]+w<=mindist[i]):
+                    mindist[i] = mindist[u]+w
+        return mindist
