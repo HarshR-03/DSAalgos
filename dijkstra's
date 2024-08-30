@@ -1,3 +1,34 @@
+#using heap:-
+import heapq
+import sys
+class Solution:
+    def shortestPath(self, n : int, m : int, edges : List[List[int]]) -> List[int]:
+        adj = [[] for _ in range(n)]
+        for i in range(m):
+            adj[edges[i][0]].append([edges[i][1],edges[i][2]])
+        
+        heap = []
+        #[dist,node]
+        heapq.heappush(heap,[0,0])
+        dist = [sys.maxsize]*n
+        dist[0] = 0
+        spset = set()
+        spset.add(0)
+        while(heap):
+            [cdist,node] = heapq.heappop(heap)
+            for [neighbour,d] in adj[node]:
+                if neighbour not in spset and cdist + d < dist[neighbour]:
+                    spset.add
+                    heapq.heappush(heap,[cdist+d,neighbour])
+                    dist[neighbour] = cdist + d
+        
+        for i in range(n):
+            if dist[i]==sys.maxsize:
+                dist[i] = -1
+        return dist
+
+
+#without heap
 class Solution:
 
     #Function to find the shortest distance of all the vertices
