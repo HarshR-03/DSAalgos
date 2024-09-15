@@ -1,0 +1,49 @@
+    bool rec(int ind, vector<int> &arr, int t){
+        if(t==0) return true;
+        if(ind ==0) return (arr[0]==t);
+        bool take = false;
+        if(arr[ind]<=t)
+            take = rec(ind-1,arr,t-arr[ind]);
+        bool nottake = rec(ind-1,arr,t);
+        return take||nottake;
+    }
+    
+    bool mem(int ind, vector<int>&arr, int t, vector<vector<int>> &dp){
+        if(t==0) return dp[ind][0]=1;
+        if(ind==0) return dp[0][t] = (arr[0]==t);
+        if(dp[ind][t]!=-1){
+            return dp[ind][t];
+        }
+        bool take = false;
+        if(arr[ind]<=t)
+            take = mem(ind-1,arr,t-arr[ind],dp);
+        bool nottake = mem(ind-1,arr,t,dp);
+        return dp[ind][t]=take||nottake;
+    }
+        
+    bool tab(vector<int> &arr, int t){
+        vector<vector<int>> dp(arr.size(),vector<int>(t+1,0));
+        // dp[0][arr[0]] = 1;
+        if(arr[0]<=t) //remember
+            dp[0][arr[0]] = 1;
+        for(int i=0;i<=arr.size()-1;i++){
+            dp[i][0] = 1;
+        }
+        for(int ind=1; ind<arr.size(); ind++){
+            for(int target=1; target<=t; target++){
+                bool take = false;
+                if(arr[ind]<=target)
+                    take = dp[ind-1][target-arr[ind]];
+                bool nottake = dp[ind-1][target];
+                dp[ind][target] = take|nottake;
+            }
+        }
+        return dp[arr.size()-1][t];
+    }
+    
+    bool isSubsetSum(vector<int>arr, int sum){
+        // return rec(arr.size()-1,arr,sum);
+        // vector<vector<int>> dp(arr.size(),vector<int>(sum+1,-1));
+        // return mem(arr.size()-1,arr,sum,dp);
+        return tab(arr,sum);
+    }
